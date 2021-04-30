@@ -560,7 +560,9 @@ func (r *Raft) maybeSendAppend(to uint64, sendIfEmpty bool) bool {
 
 		entries := make([]*pb.Entry, 0, len(ents))
 		for i := range ents {
-			entries = append(entries, &ents[i])
+			clone := new(pb.Entry)
+			*clone = ents[i]
+			entries = append(entries, clone)
 		}
 		m.Entries = entries
 		m.Commit = r.RaftLog.committed
